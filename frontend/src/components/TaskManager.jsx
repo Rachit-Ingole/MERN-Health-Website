@@ -42,7 +42,7 @@ export default function TaskManager() {
         setTasks(newTasks)
     }
   return (
-    <div className='rounded-lg flex flex-col bg-red-300 w-full text-white'>
+    <div className=' divide-blue-400 rounded-lg flex flex-col backdrop-grayscale-[80%] w-full backdrop-blur-md w-full text-white'>
         <div className='flex justify-between rounded-t-lg bg-blue-300 w-full align-middle '>
             <h1 className=' text-xl  pl-[10px] p-0.5'>Task Manager</h1>
             
@@ -63,8 +63,8 @@ export default function TaskManager() {
         </div>
 
 
-        <div className='mt-auto h-[40px] bg-blue-200 rounded-b-lg flex justify-between align-center pl-3 pr-3 p-1'>
-            <input type='text' placeholder='Enter New Task' className='underline underline-offset-2 bg-transparent w-[95%] pl-2' onChange={(e)=>setInput(e.target.value)} value={input}></input>
+        <div className='border-t-4 mb-[3px] mt-auto h-[40px] rounded-b-lg flex justify-between align-center pl-3 pr-3 p-1'>
+            <input type='text' placeholder='Enter New Task' className='placeholder-white underline underline-offset-2 bg-transparent w-[95%] pl-2' onChange={(e)=>setInput(e.target.value)} value={input}></input>
             <button onClick={(e)=>{handleSubmit(e)}}><i className="text-2xl fa-solid fa-arrow-right"></i></button>
         </div>
     
