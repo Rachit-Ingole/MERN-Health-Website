@@ -6,12 +6,14 @@
   min-height: 100vh;
   display: flex;
   position: absolute;
+  overflow-x:hidden;
 }
 
 body{
-  background-image: url('/tempBg.jpg');
+
   background-attachment: fixed;
   background-size: cover;
+  overflow-x:hidden;
 
 }
 
@@ -29,6 +31,19 @@ body{
   height: 100%;
   flex: 1;
   object-fit: cover;
+}
+
+
+.timer  input:hover{
+  border: none;
+  outline: none;
+}
+.timer  input:focus{
+  border: none;
+  outline: none;
+}
+.outer{
+  background-image: conic-gradient(#93c5fd 0deg,transparent 0deg, transparent 360deg);
 }
 
 ::-webkit-scrollbar {

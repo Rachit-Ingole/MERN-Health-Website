@@ -41,8 +41,15 @@ export default function TaskManager() {
         console.log(newTasks)
         setTasks(newTasks)
     }
+
+    function handleKeyDown(e){
+        if(e.key == 'Enter'){
+            handleSubmit(e);
+        }
+    }
+
   return (
-    <div className=' divide-blue-400 rounded-lg flex flex-col backdrop-grayscale-[80%] w-full backdrop-blur-md w-full text-white'>
+    <div className=' divide-blue-400 rounded-lg flex flex-col backdrop-grayscale-[80%] h-full backdrop-blur-md w-full text-white'>
         <div className='flex justify-between rounded-t-lg bg-blue-300 w-full align-middle '>
             <h1 className=' text-xl  pl-[10px] p-0.5'>Task Manager</h1>
             
@@ -54,9 +61,9 @@ export default function TaskManager() {
         <div className='divide-y scroll-auto max-h-[500px]'>
             {tasks.map((value,idx)=>{
 
-                return <div key={idx} className={'w-full pl-4 p-2 flex items-center' + (value.completed ? 'line-through' : '') }> 
-                    <h1 >{idx+1}. {value.task}</h1> 
-                    <input className='ml-auto ' type='checkbox' id={value.id} checked={value.completed} onChange={(e)=>{handleComplete(e)}}></input>
+                return <div key={idx} className={'w-full pl-4 p-2 flex items-center ' + (value.completed ? 'line-through ' : ' ') }> 
+                    <h1 className='text-xl'>{idx+1}. {value.task}</h1> 
+                    <input className='ml-auto h-20px w-20px' type='checkbox' id={value.id} checked={value.completed} onChange={(e)=>{handleComplete(e)}}></input>
                     <button onClick={(e)=>{handleDelete(e)}} id={value.id} className='align-middle'><i id={value.id} className="text-md fa-solid fa-trash ml-3 mr-1"></i> </button>
                 </div>
             })}
@@ -64,7 +71,7 @@ export default function TaskManager() {
 
 
         <div className='border-t-4 mb-[3px] mt-auto h-[40px] rounded-b-lg flex justify-between align-center pl-3 pr-3 p-1'>
-            <input type='text' placeholder='Enter New Task' className='placeholder-white underline underline-offset-2 bg-transparent w-[95%] pl-2' onChange={(e)=>setInput(e.target.value)} value={input}></input>
+            <input type='text' placeholder='Enter New Task' className='placeholder-white underline underline-offset-2 bg-transparent w-[95%] pl-2' onChange={(e)=>setInput(e.target.value)} onKeyDown={(e)=>{handleKeyDown(e)}} value={input}></input>
             <button onClick={(e)=>{handleSubmit(e)}}><i className="text-2xl fa-solid fa-arrow-right"></i></button>
         </div>
     
