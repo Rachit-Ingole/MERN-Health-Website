@@ -58,12 +58,12 @@ export default function TaskManager() {
 
         </div>
 
-        <div className='divide-y scroll-auto max-h-[500px]'>
+        <div className='divide-y overflow-auto max-h-[500px]'>
             {tasks.map((value,idx)=>{
 
                 return <div key={idx} className={'w-full pl-4 p-2 flex items-center ' + (value.completed ? 'line-through ' : ' ') }> 
                     <h1 className='text-xl'>{idx+1}. {value.task}</h1> 
-                    <input className='ml-auto h-20px w-20px' type='checkbox' id={value.id} checked={value.completed} onChange={(e)=>{handleComplete(e)}}></input>
+                    <input className='ml-auto h-50px w-50px' type='checkbox' id={value.id} checked={value.completed} onChange={(e)=>{handleComplete(e)}}></input>
                     <button onClick={(e)=>{handleDelete(e)}} id={value.id} className='align-middle'><i id={value.id} className="text-md fa-solid fa-trash ml-3 mr-1"></i> </button>
                 </div>
             })}
