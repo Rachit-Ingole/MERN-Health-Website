@@ -18,6 +18,10 @@ const UserSchema = new mongoose.Schema({
     ],
     unique: true,
   },
+  balance:{
+    type: Number,
+    default:0
+  },
   password: {
     type: String,
     required: [true, 'Please provide password'],

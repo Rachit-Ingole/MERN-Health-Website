@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
-export default function Auth() {
+export default function Auth(props) {
+  const {setToken,setData} = props
   const [page,setPage] = useState("home")
   const [error,setError] = useState("")
   const [email,setEmail] = useState("")
@@ -13,12 +14,79 @@ export default function Auth() {
     setPassword("");
     setError("")
   }
+  function handleLogin(e){
+    if( !(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(email)){
+      setError("Email is invalid")
+      return
+    }
+    
+    if(password.length < 6){
+      setError("Invalid Credentials")
+      return
+    }
+    setError("")
+    async function login() {
+      try{
+        const API_URL = 'http://localhost:3000/api/v1/auth/login'
+        const {data:actualData}  = await axios.post(API_URL,{"email":email,"password":password})
+        setToken(actualData.token)
+        setData(actualData.user)
+
+
+        
+      }catch(err){
+        setError("Invalid Credentials")
+        console.error(err)
+      }
+    }
+
+    login()
+
+  }
+
+  function handleRegister(e){
+    if( !(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(email)){
+      setError("Email is invalid")
+      return
+    }
+    if(username.length >= 50){
+      console.log(username.length)
+      setError("Username is too long")
+      return
+    }
+    if(password.length < 6){
+      setError("Password length must be greater than 6")
+      return
+    }
+    setError("")
+    async function register() {
+      try{
+        const API_URL = 'http://localhost:3000/api/v1/auth/register'
+        const {data:actualData}  = await axios.post(API_URL,{"name":username,"email":email,"password":password})
+        setToken(actualData.token)
+        setData(actualData.user)
+
+
+        
+      }catch(err){
+        setError("Email already exists")
+        console.error(err)
+      }
+    }
+
+    register()
+
+  }
 
   function handleSubmit(e){
+    if( !(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(email)){
+      return
+    }
     console.log(email,username,password)
 
 
   }
+  
 
   return (
     page == "home" ? 
@@ -30,7 +98,7 @@ export default function Auth() {
         <div className='flex flex-col lg:w-1/2 justify-center gap-[20px]'>
           <h1 className='text-4xl font-Mont  font-semibold'>Health <span className='text-blue-300'>Tracking</span>  App</h1>
           <p className='text-lg font-Poppins'>Welcome to the platform for monitoring wellness. Track your daily activities, workouts, etc. Personalized insights and actionable tips to achieve your health goals. Start your journey to a healthier you today!</p>
-          <button onClick={(e)=>setPage("register")} className='w-[200px] font-Poppins bg-blue-400 pt-2 pb-2 pl-1 pr-1 rounded-lg font-semibold'>
+          <button onClick={(e)=>setPage("login")} className='w-[200px] font-Poppins bg-blue-400 pt-2 pb-2 pl-1 pr-1 rounded-lg font-semibold'>
             Login/Register
           </button>
         </div>
@@ -66,7 +134,7 @@ export default function Auth() {
             <h1 className='text-red-400'>{error}</h1>
           </div>
           <div className='mx-auto  text-lg sm:text-xl   w-full flex justify-center '>
-            <button onClick={(e)=>handleSubmit(e)} className='font-Mont bg-blue-400 py-1 w-1/2 rounded-lg duration-700 hover:bg-blue-600'>Submit</button>
+            <button onClick={(e)=>handleLogin(e)} className='font-Mont bg-blue-400 py-1 w-1/2 rounded-lg duration-700 hover:bg-blue-600'>Submit</button>
           </div>
           <div className='mx-auto  text-sm  '>
             <h1 className='font-Mont mt-[-10px] mb-[20px]'>Not a member yet? <span className='cursor-pointer text-blue-400 underline' onClick={(e)=>{resetData();setPage("register")}}>Register</span></h1>
@@ -103,7 +171,7 @@ export default function Auth() {
             <h1 className='text-red-400'>{error}</h1>
           </div>
           <div className='mx-auto  text-lg sm:text-xl   w-full flex justify-center '>
-            <button onClick={(e)=>handleSubmit(e)} className='font-Mont bg-blue-400 py-1 w-1/2 rounded-lg duration-700 hover:bg-blue-600'>Submit</button>
+            <button onClick={(e)=>handleRegister(e)} className='font-Mont bg-blue-400 py-1 w-1/2 rounded-lg duration-700 hover:bg-blue-600'>Submit</button>
           </div>
           <div className='mx-auto  text-sm  '>
             <h1 className='font-Mont mt-[-10px] mb-[20px]'>Already a member? <span className='cursor-pointer text-blue-400 underline' onClick={(e)=>{resetData();setPage("login")}}>Login</span></h1>

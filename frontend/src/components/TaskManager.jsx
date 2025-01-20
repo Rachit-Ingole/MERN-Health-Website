@@ -1,8 +1,29 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-export default function TaskManager() {
-    const [tasks,setTasks] = useState([{id:1,task:"meditate for 10mins",completed:true},{id:2,task:"do 10 pushups:", completed:false}])
+export default function TaskManager(props) {
+    const {token} = props
+    const [tasks,setTasks] = useState([])
     const [input,setInput] = useState("")
+
+    useEffect(()=>{
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const getTasks = async () => {
+            try{
+              const API_URL = 'http://localhost:3000/api/v1/tasks'
+              const {data:actualData}  = await axios.get(API_URL,config)
+              let allTasks = actualData.tasks
+              console.log("fetched tasks " + allTasks)
+              setTasks(allTasks)
+            }catch(err){
+              console.error(err)
+            }
+          }
+      
+        getTasks();
+    },[])
+
 
     function handleComplete(e){
         
@@ -26,8 +47,22 @@ export default function TaskManager() {
         }else{
         newId = tasks[tasks.length-1].id + 1
         }
-        setTasks([...tasks,{id:newId,task:input,completed:false}])
+        
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const createTask = async () => {
+            try{
+                const API_URL = 'http://localhost:3000/api/v1/tasks'
+                const {data:actualData}  = await axios.post(API_URL,{name:input,completed:false},config)
+                setTasks([...tasks,actualData.task])
+            }catch(err){
+                console.error(err)
+            }
+        }        
+        createTask();
         setInput("")
+    
     }
 
     function handleDelete(e){
@@ -58,13 +93,13 @@ export default function TaskManager() {
 
         </div>
 
-        <div className='divide-y overflow-auto max-h-[500px]'>
+        <div className='divide-y overflow-auto max-h-[450px]'>
             {tasks.map((value,idx)=>{
 
                 return <div key={idx} className={'w-full pl-4 p-2 flex items-center ' + (value.completed ? 'line-through ' : ' ') }> 
-                    <h1 className='text-xl'>{idx+1}. {value.task}</h1> 
+                    <h1 className='text-xl'>{idx+1}. {value.name}</h1> 
                     <input className='ml-auto h-50px w-50px' type='checkbox' id={value.id} checked={value.completed} onChange={(e)=>{handleComplete(e)}}></input>
-                    <button onClick={(e)=>{handleDelete(e)}} id={value.id} className='align-middle'><i id={value.id} className="text-md fa-solid fa-trash ml-3 mr-1"></i> </button>
+                    <button onClick={(e)=>{handleDelete(e)}} id={value.id} className=' text-red-500 align-middle'><i id={value.id} className="text-md fa-solid fa-trash ml-3 mr-1"></i> </button>
                 </div>
             })}
         </div>

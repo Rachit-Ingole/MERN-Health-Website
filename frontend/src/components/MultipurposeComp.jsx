@@ -80,13 +80,14 @@ export default function MultipurposeComp() {
     },[active,seconds,minutes,paused])
 
     return (
-    <div className='row-span-2 text-white rounded-lg backdrop-grayscale-[80%]  backdrop-blur-md w-full col-h-[500px] sm:h-auto'>
+    <div className='row-span-2 min-h-[300px] text-white rounded-lg backdrop-grayscale-[80%]  backdrop-blur-md w-full sm:h-auto'>
         <div className='flex h-[30px] '>
             <h1 onClick={()=>{setPage("timer")}} className={'rounded-tl-lg cursor-pointer text-xl w-1/2 h-full align-middle text-center ' + (page == 'timer' ? 'bg-blue-300': 'bg-red-400')}>Timer</h1>
             <h2 onClick={()=>{setPage("suggest")}} className={'rounded-tr-lg cursor-pointer text-xl w-1/2 h-full align-middle text-center ' + (page == 'suggest' ? 'bg-blue-300': 'bg-red-400')}>Suggest</h2>
         </div>
+
         <div className='h-full w-full flex justify-center'>
-            {page == 'timer' ? <Timer handleStop={handleStop} handlePause={handlePause} paused={paused} setPaused={setPaused} seconds={seconds} setSeconds={setSeconds} minutes={minutes} setMinutes={setMinutes} active={active} setActive={setActive} setTotalTime={setTotalTime} handleChange={handleChange} handleTimer={handleTimer} totalTime={totalTime} /> : <Recommendation/>}   
+        {page == 'timer' ? <Timer handleStop={handleStop} handlePause={handlePause} paused={paused} setPaused={setPaused} seconds={seconds} setSeconds={setSeconds} minutes={minutes} setMinutes={setMinutes} active={active} setActive={setActive} setTotalTime={setTotalTime} handleChange={handleChange} handleTimer={handleTimer} totalTime={totalTime} /> : <Recommendation/>}   
         </div> 
     </div>
   )
