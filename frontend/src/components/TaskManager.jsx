@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react'
+import TodoCard from './TodoCard';
 
 export default function TaskManager(props) {
     const {token} = props
     const [tasks,setTasks] = useState([])
     const [input,setInput] = useState("")
-
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    
     useEffect(()=>{
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
         const getTasks = async () => {
             try{
               const API_URL = 'http://localhost:3000/api/v1/tasks'
               const {data:actualData}  = await axios.get(API_URL,config)
               let allTasks = actualData.tasks
-              console.log("fetched tasks " + allTasks)
+              console.log("fetched tasks ")
               setTasks(allTasks)
             }catch(err){
               console.error(err)
@@ -25,32 +26,38 @@ export default function TaskManager(props) {
     },[])
 
 
-    function handleComplete(e){
+    function handleComplete(task){
         
-        if(!e.target.checked){
+        if(task.completed){
             return
         }
-        let newTaskList = [...tasks]
-        for(let i of newTaskList){
-            if(i.id == e.target.id){
-                i.completed = true
+        const completeTask = async () => {
+            try{
+                const API_URL = `http://localhost:3000/api/v1/tasks/${task._id}`
+                const {data:actualData}  = await axios.patch(API_URL,{completed:true},config)
+                let newTaskList = [...tasks]
+                for(let i of newTaskList){
+                    if(i._id == task._id){
+                        i.completed = true
+                    }
+                }
+                setTasks(newTaskList)
+            }catch(err){
+                console.error(err)
             }
-        }
-        setTasks(newTaskList)
+        }        
+        completeTask();
     }
     
     function handleSubmit(e){
         if(e.target.value == ""){return}
-        let newId
+        let newId;
         if(tasks.length <= 0){
             newId = 1;
         }else{
         newId = tasks[tasks.length-1].id + 1
         }
-        
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
+
         const createTask = async () => {
             try{
                 const API_URL = 'http://localhost:3000/api/v1/tasks'
@@ -64,17 +71,22 @@ export default function TaskManager(props) {
         setInput("")
     
     }
-
-    function handleDelete(e){
+    
+    function handleDelete(task){
+        
         let newTasks = tasks.filter((value,idx)=>{
-            if(e.target.id == value.id){
-                return false
-            }else{
-                return true
-            }
+            return value != task
         })
-        console.log(newTasks)
-        setTasks(newTasks)
+        const deleteTask = async () => {
+            try{
+                const API_URL = `http://localhost:3000/api/v1/tasks/${task._id}`
+                await axios.delete(API_URL,config)
+                setTasks(newTasks)
+            }catch(err){
+                console.error(err)
+            }
+        }        
+        deleteTask();
     }
 
     function handleKeyDown(e){
@@ -96,11 +108,7 @@ export default function TaskManager(props) {
         <div className='divide-y overflow-auto max-h-[450px]'>
             {tasks.map((value,idx)=>{
 
-                return <div key={idx} className={'w-full pl-4 p-2 flex items-center ' + (value.completed ? 'line-through ' : ' ') }> 
-                    <h1 className='text-xl'>{idx+1}. {value.name}</h1> 
-                    <input className='ml-auto h-50px w-50px' type='checkbox' id={value.id} checked={value.completed} onChange={(e)=>{handleComplete(e)}}></input>
-                    <button onClick={(e)=>{handleDelete(e)}} id={value.id} className=' text-red-500 align-middle'><i id={value.id} className="text-md fa-solid fa-trash ml-3 mr-1"></i> </button>
-                </div>
+                return <TodoCard key={idx} idx={idx} handleDelete={handleDelete} handleComplete={handleComplete} value={value}/>
             })}
         </div>
 

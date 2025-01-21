@@ -35,7 +35,7 @@ const deleteTask = async (req, res, next) => {
     params: { id: taskId },
   } = req
 
-  const task = await Task.findByIdAndRemove({ _id: taskId,createdBy:userId })
+  const task = await Task.findByIdAndDelete({ _id: taskId,createdBy:userId })
   if (!task) {
     return NotFoundError(`No task with id : ${taskId}`)
   }
@@ -44,14 +44,11 @@ const deleteTask = async (req, res, next) => {
 
 const updateTask = async (req, res, next) => {
   const {
-    body: { taskDescription, completed },
     user: { userId },
     params: { id: taskId },
   } = req
-  if (taskDescription === '') {
-    throw new BadRequestError('Task field cannot be empty')
-  }
-  const task = await Task.findByIdAndUpdate({ _id: taskId,createdBy:userId }, req.body, {
+  console.log("HELLO")
+  const task = await Task.findByIdAndUpdate({ _id: taskId,createdBy:userId }, {completed:true}, {
     new: true,
     runValidators: true,
   })
