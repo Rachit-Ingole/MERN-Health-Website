@@ -3,10 +3,11 @@ const { StatusCodes } = require('http-status-codes')
 const { BadRequestError, NotFoundError } = require('../errors');
 const { default: axios } = require('axios');
 const data = require('../data/quotes')
+const backgrounds = require('../data/background');
+const { default: background } = require('../data/background');
 require('dotenv').config();
 
 let quoteData = {}
-
 //{'QUOTE-{today}': quote }
 const getQuote = async (req, res) => {
  
@@ -30,9 +31,14 @@ const getQuote = async (req, res) => {
   
 }
 
+const getBackground = async (req,res)=>{
+  const background = backgrounds.default[Math.floor(Math.random() * 46)]
+  res.status(StatusCodes.OK).json(background)
+}
 
 
 module.exports = {
-    getQuote
+    getQuote,
+    getBackground
 }
   
