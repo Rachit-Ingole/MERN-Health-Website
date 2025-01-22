@@ -11,7 +11,6 @@ function App() {
   return (
     token ?
     <>
-      
       <Navbar setToken={setToken} data={data}/>
       <Main token={token} data={data}/>
     </>

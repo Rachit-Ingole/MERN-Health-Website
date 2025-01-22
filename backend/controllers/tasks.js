@@ -47,7 +47,6 @@ const updateTask = async (req, res, next) => {
     user: { userId },
     params: { id: taskId },
   } = req
-  console.log("HELLO")
   const task = await Task.findByIdAndUpdate({ _id: taskId,createdBy:userId }, {completed:true}, {
     new: true,
     runValidators: true,

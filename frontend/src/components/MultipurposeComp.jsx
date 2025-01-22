@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react'
 import Timer from './Timer'
 import Recommendation from './Recommendation'
 import addNotification from 'react-push-notification';
-import vite from '/vite.svg';
+import logo from '/logo.png'
 
 export default function MultipurposeComp() {
     const [page,setPage] = useState("timer")
@@ -27,9 +27,9 @@ export default function MultipurposeComp() {
     function notify(e){
         addNotification({
             title:'Your Timer has Ended',
-            message:'time for a break, bish',
+            message:'Timer has ended, get some rest bud ',
             duration:10000,
-            icon:vite,
+            icon:logo,
             native:true
 
         })
@@ -80,13 +80,13 @@ export default function MultipurposeComp() {
     },[active,seconds,minutes,paused])
 
     return (
-    <div className='row-span-2 min-h-[300px] text-white rounded-lg backdrop-grayscale-[80%]  backdrop-blur-md w-full sm:h-auto'>
+    <div className=' row-span-2 min-h-[300px] text-white rounded-lg backdrop-grayscale-[80%]  backdrop-blur-md w-full sm:h-auto'>
         <div className='flex h-[30px] '>
-            <h1 onClick={()=>{setPage("timer")}} className={'rounded-tl-lg cursor-pointer text-xl w-1/2 h-full align-middle text-center ' + (page == 'timer' ? 'bg-blue-300': 'bg-red-400')}>Timer</h1>
-            <h2 onClick={()=>{setPage("suggest")}} className={'rounded-tr-lg cursor-pointer text-xl w-1/2 h-full align-middle text-center ' + (page == 'suggest' ? 'bg-blue-300': 'bg-red-400')}>Suggest</h2>
+            <h1 onClick={()=>{setPage("timer")}} className={'font-Mont rounded-tl-lg cursor-pointer text-xl w-1/2 h-full align-middle text-center ' + (page == 'timer' ? 'bg-blue-300': 'bg-red-400')}>Timer</h1>
+            <h2 onClick={()=>{setPage("suggest")}} className={'font-Mont rounded-tr-lg cursor-pointer text-xl w-1/2 h-full align-middle text-center ' + (page == 'suggest' ? 'bg-blue-300': 'bg-red-400')}>Suggest</h2>
         </div>
 
-        <div className='h-full w-full flex justify-center'>
+        <div className='h-full w-full flex justify-center font-Mont'>
         {page == 'timer' ? <Timer handleStop={handleStop} handlePause={handlePause} paused={paused} setPaused={setPaused} seconds={seconds} setSeconds={setSeconds} minutes={minutes} setMinutes={setMinutes} active={active} setActive={setActive} setTotalTime={setTotalTime} handleChange={handleChange} handleTimer={handleTimer} totalTime={totalTime} /> : <Recommendation/>}   
         </div> 
     </div>

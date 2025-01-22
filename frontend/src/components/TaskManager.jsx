@@ -4,6 +4,15 @@ import TodoCard from './TodoCard';
 export default function TaskManager(props) {
     const {token} = props
     const [tasks,setTasks] = useState([])
+    const [currentTasks,setCurrentTasks] = useState([])
+    // {date: tasks, date2: tasks, date3: tasks}
+    const [date,setDate] = useState(()=>{
+        const date = new Date();
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    })
     const [input,setInput] = useState("")
     const config = {
         headers: { Authorization: `Bearer ${token}` }
@@ -23,6 +32,7 @@ export default function TaskManager(props) {
           }
       
         getTasks();
+        console.log(date);
     },[])
 
 
@@ -98,7 +108,7 @@ export default function TaskManager(props) {
   return (
     <div className=' divide-blue-400 rounded-lg flex flex-col backdrop-grayscale-[80%] h-full backdrop-blur-md w-full text-white'>
         <div className='flex justify-between rounded-t-lg bg-blue-300 w-full align-middle '>
-            <h1 className=' text-xl  pl-[10px] p-0.5'>Task Manager</h1>
+            <h1 className=' text-xl font-Mont  pl-[10px] p-0.5'>Task Manager - <span className=' text-sm'>{date}</span></h1>
             
             <i className="cursor-pointer align-middle text-xl p-0.5 mr-[10px] fa-solid fa-jar"></i>
             

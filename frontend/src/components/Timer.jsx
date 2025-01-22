@@ -9,7 +9,7 @@ export default function Timer(props) {
     <div className='circle absolute p-2 h-full w-full flex justify-center items-center '>
       <div className='outer translate-y-[-15px] w-[250px] h-[250px] rounded-[50%] flex justify-center items-center '>
         <div className='inner w-[225px] h-[225px] border-2 border-white bg-white rounded-[50%] stroke-2 '>
-
+          
         </div>
       </div>
     </div>
