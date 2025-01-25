@@ -4,8 +4,24 @@ const { BadRequestError, NotFoundError } = require('../errors')
 
 
 const getAllTasks = async (req, res) => {
+
   const tasks = await Task.find({ createdBy: req.user.userId }).sort('createdAt')
-  res.status(200).json({ tasks,count:tasks.length })
+  const categorizedData = {};
+
+  tasks.forEach(doc => {
+    try {
+      let createdAtDate = new Date(doc.createdAt);
+      createdAtDate = `${createdAtDate.getDate()}/${createdAtDate.getMonth() + 1}/${createdAtDate.getFullYear()}`;
+      if (!categorizedData[createdAtDate]) {
+        categorizedData[createdAtDate] = [];
+      }
+      categorizedData[createdAtDate].push(doc);
+    } catch (error) {
+      console.error("Error parsing date:", error);
+    }
+  });
+
+  res.status(200).json(categorizedData)
 }
 
 const getTask = async (req, res) => {

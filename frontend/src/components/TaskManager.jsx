@@ -1,41 +1,71 @@
 import React, { useEffect, useState } from 'react'
 import TodoCard from './TodoCard';
+import DateCard from './DateCard';
 
 export default function TaskManager(props) {
     const {token} = props
-    const [tasks,setTasks] = useState([])
-    const [currentTasks,setCurrentTasks] = useState([])
+    const [page,setPage] = useState("tasks")
+    
+    const [data,setData] = useState([])
     // {date: tasks, date2: tasks, date3: tasks}
-    const [date,setDate] = useState(()=>{
-        const date = new Date();
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-    })
+    const [date,setDate] = useState(null)
     const [input,setInput] = useState("")
+    const [tasks,setTasks] = useState([])
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
+
     
     useEffect(()=>{
+        let date = new Date();
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        date = `${day}/${month}/${year}`
+        setDate(date);
         const getTasks = async () => {
             try{
-              const API_URL = 'http://localhost:3000/api/v1/tasks'
-              const {data:actualData}  = await axios.get(API_URL,config)
-              let allTasks = actualData.tasks
-              console.log("fetched tasks ")
-              setTasks(allTasks)
+                const API_URL = 'http://localhost:3000/api/v1/tasks'
+                const {data:actualData}  = await axios.get(API_URL,config)
+                console.log("fetched tasks ")
+                setData(actualData)
+                if(actualData[date]){
+                    setTasks(actualData[date])
+                }else{
+                    setTasks([])
+                }
             }catch(err){
-              console.error(err)
+                console.error(err)
             }
-          }
-      
+        }
+        
         getTasks();
-        console.log(date);
+        
     },[])
-
-
+    
+    
+    function handleDateChange(newDate){
+        setDate(newDate)
+        setPage("tasks")
+        setTasks(data[newDate])
+        const getTasks = async () => {
+            try{
+                const API_URL = 'http://localhost:3000/api/v1/tasks'
+                const {data:actualData}  = await axios.get(API_URL,config)
+                console.log("fetched tasks ")
+                setData(actualData)
+                if(actualData[newDate]){
+                    setTasks(actualData[newDate])
+                }else{
+                    setTasks([])
+                }
+            }catch(err){
+                console.error(err)
+            }
+        }
+        
+        getTasks();
+    }
     function handleComplete(task){
         
         if(task.completed){
@@ -44,7 +74,7 @@ export default function TaskManager(props) {
         const completeTask = async () => {
             try{
                 const API_URL = `http://localhost:3000/api/v1/tasks/${task._id}`
-                const {data:actualData}  = await axios.patch(API_URL,{completed:true},config)
+                await axios.patch(API_URL,{completed:true},config)
                 let newTaskList = [...tasks]
                 for(let i of newTaskList){
                     if(i._id == task._id){
@@ -55,7 +85,7 @@ export default function TaskManager(props) {
             }catch(err){
                 console.error(err)
             }
-        }        
+        }
         completeTask();
     }
     
@@ -108,18 +138,22 @@ export default function TaskManager(props) {
   return (
     <div className=' divide-blue-400 rounded-lg flex flex-col backdrop-grayscale-[80%] h-full backdrop-blur-md w-full text-white'>
         <div className='flex justify-between rounded-t-lg bg-blue-300 w-full align-middle '>
-            <h1 className=' text-xl font-Mont  pl-[10px] p-0.5'>Task Manager - <span className=' text-sm'>{date}</span></h1>
+            <h1 className=' text-xl font-Mont  pl-[10px] p-0.5'>Task Manager - <span className='font-semibold text-sm'>{date}</span></h1>
             
-            <i className="cursor-pointer align-middle text-xl p-0.5 mr-[10px] fa-solid fa-jar"></i>
+            
+            <i onClick={(e)=>{setPage("dates")}} className="hover:text-red-600 duration-[300ms] cursor-pointer align-middle text-xl p-0.5 mr-[10px] fa-solid fa-jar"></i>
             
 
         </div>
 
         <div className='divide-y overflow-auto max-h-[450px]'>
-            {tasks.map((value,idx)=>{
-
+            {page == "tasks"? tasks.map((value,idx)=>{
                 return <TodoCard key={idx} idx={idx} handleDelete={handleDelete} handleComplete={handleComplete} value={value}/>
-            })}
+            }) :
+            Object.keys(data).reverse().map((value,idx)=>{
+                return <DateCard key={idx} idx={idx} handleDateChange={handleDateChange} value={value}/>
+            })
+            }
         </div>
 
 
@@ -128,7 +162,6 @@ export default function TaskManager(props) {
             <button onClick={(e)=>{handleSubmit(e)}}><i className="text-2xl fa-solid fa-arrow-right"></i></button>
         </div>
     
-
     </div>
   )
 }

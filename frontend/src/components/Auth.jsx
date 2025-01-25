@@ -150,15 +150,15 @@ export default function Auth(props) {
           <div className='flex flex-col justify-evenly h-1/2 items-center mb-[20px]'>
             <div className='mx-auto text-xl sm:text-2xl w-3/4'>
               <h1 className='font-Poppins text-xl'>Username:</h1>
-              <input value={username} onChange={(e)=>{setUsername(e.target.value)}} className='w-full pl-1 rounded-md text-slate-800 '></input>
+              <input value={username} onChange={(e)=>{setUsername(e.target.value)}} className='w-full pl-1 h-[30px] text-lg rounded-md text-slate-800 focus:outline-none'></input>
             </div>
             <div className='mx-auto text-xl sm:text-2xl w-3/4'>
               <h1 className='font-Poppins text-xl'>Email:</h1>
-              <input value={email} onChange={(e)=>{setEmail(e.target.value)}} className='w-full pl-1 rounded-md text-slate-800 '></input>
+              <input value={email} onChange={(e)=>{setEmail(e.target.value)}} className='w-full pl-1 h-[30px] text-lg rounded-md text-slate-800 focus:outline-none'></input>
             </div>
             <div className='mx-auto text-xl sm:text-2xl w-3/4'>
               <h1 className='font-Poppins text-xl'>Password:</h1>
-              <input value={password} onChange={(e)=>{setPassword(e.target.value)}} type='password' className='w-full pl-1  rounded-md text-slate-800'></input>
+              <input value={password} onChange={(e)=>{setPassword(e.target.value)}} type='password' className='w-full pl-1 h-[30px] text-lg rounded-md text-slate-800 focus:outline-none'></input>
             </div>
           </div>
           <div className='mx-auto alert box'>
