@@ -5,7 +5,7 @@ import DateCard from './DateCard';
 export default function TaskManager(props) {
     const {token} = props
     const [page,setPage] = useState("tasks")
-    
+    const [error,setError] = useState(false)
     const [data,setData] = useState([])
     // {date: tasks, date2: tasks, date3: tasks}
     const [date,setDate] = useState(null)
@@ -97,6 +97,18 @@ export default function TaskManager(props) {
         }else{
         newId = tasks[tasks.length-1].id + 1
         }
+        let todaysDate = new Date();
+        let day = todaysDate.getDate();
+        let month = todaysDate.getMonth() + 1;
+        let year = todaysDate.getFullYear();
+        todaysDate = `${day}/${month}/${year}`
+        if(date != todaysDate){
+            setError(true);
+            setTimeout(()=>{
+                setError(false)
+            },500)
+            return;
+        }
 
         const createTask = async () => {
             try{
@@ -141,7 +153,7 @@ export default function TaskManager(props) {
             <h1 className=' text-xl font-Mont  pl-[10px] p-0.5'>Task Manager - <span className='font-semibold text-sm'>{date}</span></h1>
             
             
-            <i onClick={(e)=>{setPage("dates")}} className="hover:text-red-600 duration-[300ms] cursor-pointer align-middle text-xl p-0.5 mr-[10px] fa-solid fa-jar"></i>
+            <i onClick={(e)=>{if(page == "tasks"){setPage("date")}else{setPage("tasks")}}} className="hover:text-red-600 duration-[300ms] cursor-pointer align-middle text-xl p-0.5 mr-[10px] fa-solid fa-jar"></i>
             
 
         </div>
@@ -158,10 +170,11 @@ export default function TaskManager(props) {
 
 
         <div className='border-t-4 mb-[3px] mt-auto h-[40px] rounded-b-lg flex justify-between align-center pl-3 pr-3 p-1'>
-            <input type='text' placeholder='Enter New Task' className='placeholder-white underline underline-offset-2 bg-transparent w-[95%] pl-2' onChange={(e)=>setInput(e.target.value)} onKeyDown={(e)=>{handleKeyDown(e)}} value={input}></input>
-            <button onClick={(e)=>{handleSubmit(e)}}><i className="text-2xl fa-solid fa-arrow-right"></i></button>
+            <input type='text' placeholder='Enter New Task' className={'placeholder-white underline underline-offset-2 bg-transparent w-[95%] pl-2 animate-once animate-ease-in ' + (error ? "animate-shake": "")} onChange={(e)=>setInput(e.target.value)} onKeyDown={(e)=>{handleKeyDown(e)}} value={input}></input>
+            <button onClick={(e)=>{handleSubmit(e);}}><i className="text-2xl fa-solid fa-arrow-right"></i></button>
         </div>
     
     </div>
   )
 }
+
