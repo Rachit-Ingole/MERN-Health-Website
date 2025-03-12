@@ -9,7 +9,7 @@ export default function QuoteGenerator(props) {
       headers: { Authorization: `Bearer ${token}` }
   };
     async function fetchQuote(){
-      const URL = 'http://localhost:3000/api/v1/others/quote'
+      const URL = 'http://localhost:5000/api/v1/others/quote'
       const today = (new Date()).toDateString()
       const localKey = `QUOTE-${today}`
       if (localStorage.getItem(localKey)) {

@@ -13,7 +13,7 @@ export default function Main(props) {
         const config = {
           headers: { Authorization: `Bearer ${token}` }
         };
-        const API_URL = `http://localhost:3000/api/v1/others/background`
+        const API_URL = `http://localhost:5000/api/v1/others/background`
         const {data:actualData}  = await axios.get(API_URL,config)
         const imgUrl = actualData
         body.style.backgroundImage = `url('./tempBg.jpg')`;

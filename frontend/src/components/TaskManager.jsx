@@ -25,9 +25,24 @@ export default function TaskManager(props) {
         setDate(date);
         const getTasks = async () => {
             try{
-                const API_URL = 'http://localhost:3000/api/v1/tasks'
+                const API_URL = 'http://localhost:5000/api/v1/tasks'
                 const {data:actualData}  = await axios.get(API_URL,config)
                 console.log("fetched tasks ")
+                let todaysDate = new Date();
+                let day = todaysDate.getDate();
+                let month = todaysDate.getMonth() + 1;
+                let year = todaysDate.getFullYear();
+                todaysDate = `${day}/${month}/${year}`
+                let found = false;
+                for(let key of Object.keys(actualData)){
+                    if(key == todaysDate){  
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found){
+                    actualData[todaysDate] = [];
+                }
                 setData(actualData)
                 if(actualData[date]){
                     setTasks(actualData[date])
@@ -50,9 +65,24 @@ export default function TaskManager(props) {
         setTasks(data[newDate])
         const getTasks = async () => {
             try{
-                const API_URL = 'http://localhost:3000/api/v1/tasks'
+                const API_URL = 'http://localhost:5000/api/v1/tasks'
                 const {data:actualData}  = await axios.get(API_URL,config)
                 console.log("fetched tasks ")
+                let todaysDate = new Date();
+                let day = todaysDate.getDate();
+                let month = todaysDate.getMonth() + 1;
+                let year = todaysDate.getFullYear();
+                todaysDate = `${day}/${month}/${year}`
+                let found = false;
+                for(let key of Object.keys(actualData)){
+                    if(key == todaysDate){  
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found){
+                    actualData[todaysDate] = [];
+                }
                 setData(actualData)
                 if(actualData[newDate]){
                     setTasks(actualData[newDate])
@@ -73,7 +103,7 @@ export default function TaskManager(props) {
         }
         const completeTask = async () => {
             try{
-                const API_URL = `http://localhost:3000/api/v1/tasks/${task._id}`
+                const API_URL = `http://localhost:5000/api/v1/tasks/${task._id}`
                 await axios.patch(API_URL,{completed:true},config)
                 let newTaskList = [...tasks]
                 for(let i of newTaskList){
@@ -112,7 +142,7 @@ export default function TaskManager(props) {
 
         const createTask = async () => {
             try{
-                const API_URL = 'http://localhost:3000/api/v1/tasks'
+                const API_URL = 'http://localhost:5000/api/v1/tasks'
                 const {data:actualData}  = await axios.post(API_URL,{name:input,completed:false},config)
                 setTasks([...tasks,actualData.task])
             }catch(err){
@@ -131,7 +161,7 @@ export default function TaskManager(props) {
         })
         const deleteTask = async () => {
             try{
-                const API_URL = `http://localhost:3000/api/v1/tasks/${task._id}`
+                const API_URL = `http://localhost:5000/api/v1/tasks/${task._id}`
                 await axios.delete(API_URL,config)
                 setTasks(newTasks)
             }catch(err){

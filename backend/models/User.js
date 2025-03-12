@@ -2,6 +2,13 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+function getDate(){
+let todaysDate = new Date();
+let day = todaysDate.getDate();
+let month = todaysDate.getMonth() + 1;
+let year = todaysDate.getFullYear();
+return `${day}/${month}/${year}`
+}
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -28,7 +35,10 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
   },
   actions: { type: Number, default: 0 },
-  lastActionDate: { type: Date, default: null }
+  lastActionDate: { 
+    type: String,
+    default: getDate()
+  }
 })
 
 UserSchema.pre('save', async function () {

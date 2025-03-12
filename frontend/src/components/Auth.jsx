@@ -27,9 +27,10 @@ export default function Auth(props) {
     setError("")
     async function login() {
       try{
-        const API_URL = 'http://localhost:3000/api/v1/auth/login'
+        const API_URL = 'http://localhost:5000/api/v1/auth/login'
         const {data:actualData}  = await axios.post(API_URL,{"email":email,"password":password})
         setToken(actualData.token)
+        console.log(actualData.user)
         setData(actualData.user)
 
 
@@ -61,9 +62,10 @@ export default function Auth(props) {
     setError("")
     async function register() {
       try{
-        const API_URL = 'http://localhost:3000/api/v1/auth/register'
+        const API_URL = 'http://localhost:5000/api/v1/auth/register'
         const {data:actualData}  = await axios.post(API_URL,{"name":username,"email":email,"password":password})
         setToken(actualData.token)
+        console.log(actualData.user)
         setData(actualData.user)
 
 
