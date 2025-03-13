@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect,useContext, useState } from 'react'
 import TodoCard from './TodoCard';
 import DateCard from './DateCard';
+import { UserInfoContext } from '../scripts/context';
 
 export default function TaskManager(props) {
     const {token} = props
@@ -8,6 +9,7 @@ export default function TaskManager(props) {
     const [error,setError] = useState(false)
     const [data,setData] = useState([])
     // {date: tasks, date2: tasks, date3: tasks}
+    const {userInfo,setUserInfo} = useContext(UserInfoContext);
     const [date,setDate] = useState(null)
     const [input,setInput] = useState("")
     const [tasks,setTasks] = useState([])
@@ -15,7 +17,6 @@ export default function TaskManager(props) {
         headers: { Authorization: `Bearer ${token}` }
     };
 
-    
     useEffect(()=>{
         let date = new Date();
         let day = date.getDate();
@@ -104,7 +105,7 @@ export default function TaskManager(props) {
         const completeTask = async () => {
             try{
                 const API_URL = `http://localhost:5000/api/v1/tasks/${task._id}`
-                await axios.patch(API_URL,{completed:true},config)
+                const {data:actualData} = await axios.patch(API_URL,{completed:true},config)
                 let newTaskList = [...tasks]
                 for(let i of newTaskList){
                     if(i._id == task._id){
@@ -112,6 +113,8 @@ export default function TaskManager(props) {
                     }
                 }
                 setTasks(newTaskList)
+                setUserInfo({...userInfo,balance:actualData.balance})
+                
             }catch(err){
                 console.error(err)
             }

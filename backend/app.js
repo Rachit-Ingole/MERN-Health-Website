@@ -38,7 +38,7 @@ app.use(xss());
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/tasks', authenticateUser, tasksRouter);
-app.use('/api/v1/others',authenticateUser,otherRouter);
+app.use('/api/v1/others', authenticateUser, otherRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
@@ -56,4 +56,4 @@ const start = async () => {
     }
   };
   
-  start();
+start();

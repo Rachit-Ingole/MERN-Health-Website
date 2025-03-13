@@ -95,10 +95,8 @@ const updateTask = async (req, res, next) => {
   }
 
 
-
-
-
-  res.status(StatusCodes.OK).json({ task })
+  const newUser = await User.findById({_id:userId})
+  res.status(StatusCodes.OK).json({ task:task,balance:newUser.balance })
 }
 
 module.exports = {
