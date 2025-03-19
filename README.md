@@ -1,4 +1,4 @@
-# HealthTracker
+# Healthify - HealthTracker
 Welcome to HealthTracker(currently work in progress).Its your comprehensive solution for managing fitness tasks and staying motivated on your wellness journey. Our platform offers a range of features designed to enhance your health and productivity in a visually soothing and engaging environment.
 
 ## Features
